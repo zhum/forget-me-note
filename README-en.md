@@ -2,9 +2,11 @@
 
 This project is preferred to be implemented with portable framework like Cordova or Ionic. Result shold be presented as source code + full dependences list.
 
+Please, read [NODES-en.md] for notes about UnforgettableDog3 directory, containing AndroidStudio project.
+
 # forget-me-note
 
-Organizer project "that where lies". The idea of ​​the program - to remember which drawer/desk/shelf/room which things are lying, take a picture of them and mark things. You can add a photo with text (title) or just text. At the photo, when adding a new thing, you need to mark it with a frame. You can add a hierarchy - photographed the cabinet, then added its shelves (noting them in the cabinet photo), etc.
+Organizer project "that where lies". The idea of the program - to remember which drawer/desk/shelf/room which things are lying, take a picture of them and mark things. You can add a photo with text (title) or just text. At the photo, when adding a new thing, you need to mark it with a frame. You can add a hierarchy - photographed the cabinet, then added its shelves (noting them in the cabinet photo), etc.
 
 Here the prototype is https://mockup.io/#projects/157161/mockups
 Another (without link visualization) is in the 'prototype' directory.
