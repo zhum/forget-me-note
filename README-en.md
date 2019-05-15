@@ -6,7 +6,8 @@ Please, read [NODES-en.md] for notes about UnforgettableDog3 directory, containi
 
 # forget-me-note
 
-Organizer project "that where lies". The idea of the program - to remember which drawer/desk/shelf/room which things are lying, take a picture of them and mark things. You can add a photo with text (title) or just text. At the photo, when adding a new thing, you need to mark it with a frame. You can add a hierarchy - photographed the cabinet, then added its shelves (noting them in the cabinet photo), etc.
+Android-based organizer application project "where does it lie". The idea of the program - to remember which drawer/desk/shelf/room which things are lying. Just take a picture of them in application and mark things. You can add a photo with text (title) or just text. At the photo, when adding a new thing, you need to mark it with a frame. You can add a hierarchy - photographed the cabinet, then added its shelves (noting them in the cabinet photo), etc.
+To find some thing - press search in app and seek it in a list or by typing the name. Then you'll be pointed to desired thind place photo. If you stlii cannot remember the place by photo and title, just go one level up, to see where this photo was taken, and so on.
 
 Here the prototype is https://mockup.io/#projects/157161/mockups
 Another (without link visualization) is in the 'prototype' directory.
