@@ -1,0 +1,161 @@
+<TextInputPopup>:
+  title: "Popup"
+  size_hint: None, None
+  size: 400, 400
+  auto_dismiss: False
+
+  MDBoxLayout:
+    orientation: "vertical"
+    TextInput:
+      id: txtinput
+      text: root.obj_text
+    MDRaisedButton:
+      size_hint_x: 1
+      size_hint_y: 0.3
+      size_hint_min_y: 30
+
+      text: "Save Changes"
+      on_release:
+        root.obj.update_changes(txtinput.text)
+        root.dismiss()
+    MDFlatButton:
+      size_hint_x: 1
+      size_hint_y: 0.3
+      size_hint_min_y: 30
+      text: "Cancel Changes"
+      on_release: root.dismiss()
+
+
+# <SelectableButton>:
+#   # Draw a background to indicate selection
+#   canvas.before:
+#     Color:
+#       rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+#     Rectangle:
+#       pos: self.pos
+#       size: self.size
+
+<RecycleViewRow>:
+  orientation: 'horizontal'
+  text: ''
+  index: 0
+  MDLabel:
+    markup: True
+    text_size: self.size
+    text: root.text
+  MDIconButton:
+    size_hint_max_x: 50
+    icon: 'arrow-up-bold'
+    text: '_up_' #root.buttontext #contains a link
+    on_press: root.do_up() #opens that link
+  MDIconButton:
+    size_hint_max_x: 50
+    icon: 'arrow-down-bold'
+    text: 'down' #root.buttontext #contains a link
+    on_press: root.do_down() #opens that link
+
+<SettingsWindow>:
+  name: "settings"
+
+  MDIconButton:
+    text: "Go Back"
+    icon: 'undo-variant'
+    on_release:
+      app.root.current = "main"
+      root.manager.transition.direction = "right"
+
+<Main>:
+  name: "main"
+
+  MDBoxLayout:
+    spacing: dp(10)
+    padding: dp(20)
+    orientation: "vertical"
+    # adaptive_size: True
+    MDBoxLayout:
+      size_hint_y: 0.1
+      orientation: "horizontal"
+      MDTextField:
+        multiline: False
+        hint_text: "Item name here"
+      MDIconButton:
+        icon: 'pencil'
+      MDIconButton:
+        icon: 'dots-vertical'
+        on_release:
+          app.root.current = "settings"
+          root.manager.transition.direction = "left"
+
+
+    MDBoxLayout:
+      # adaptive_size: True
+      orientation: "vertical"
+
+      # GridLayout:
+      #   size_hint: 1, None
+      #   size_hint_y: None
+      #   height: 25
+      #   cols: 4
+
+      #   MDLabel:
+      #     text: "ID"
+      #   MDLabel:
+      #     text: "Name"
+      #   MDLabel:
+      #     text: "CB Time"
+      #   MDLabel:
+      #     text: "Remarks"
+
+      MDBoxLayout:
+        adaptive_size: False
+        # size_hint_y: 1.0
+        RecycleView:
+          # size_hint_y: 1.0
+          id: main_list
+          viewclass: 'RecycleViewRow'
+          data: []
+          # data: [{'text': str(x)} for x in (11,22,33)]
+          SelectableRecycleBoxLayout:
+            size_hint_y: None
+            default_size: None, dp(48)
+            default_size_hint: 1, None
+            height: self.minimum_height
+            orientation: 'vertical'
+            multiselect: True
+            touch_multiselect: True
+    # MDGridLayout:
+    #   size_hint_max_y: "34sp"
+    #   cols: 3
+      # row_default_height: "32sp"
+    MDBoxLayout:
+      size_hint_max_y: "34sp"
+      orientation: "horizontal"
+
+      MDIconButton:
+        # text: "Settings"
+        # size_hint_x: 0.3
+        user_font_size: "32sp"
+        icon: 'pencil'        
+        # on_release:
+      MDLabel:
+        size_hint_y: None
+        text: ''
+      MDIconButton:
+        # text: "Settings"
+        # size_hint_x: 0.4
+        user_font_size: "32sp"
+        icon: 'camera-plus'        
+        # on_release:
+        #   app.root.current = "settings"
+        #   root.manager.transition.direction = "left"
+      MDLabel:
+        size_hint_y: None
+        text: ''
+      MDIconButton:
+        # text: "Settings"
+        # size_hint_x: 0.3
+        user_font_size: "32sp"
+        icon: 'card-search-outline'        
+        # on_release:
+        #   app.root.current = "settings"
+        #   root.manager.transition.direction = "left"
