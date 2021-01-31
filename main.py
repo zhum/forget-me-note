@@ -142,6 +142,9 @@ class Main(Screen):
     ml.data = [{'text': f"{row[0]} - {row[1]} - {row[2]} - {row[3]}"} for row in rows]
     ml.refresh_from_data()
 
+    im = self.ids['item_image']
+    im.source = 'photo.jpeg'
+
 
   def update_db(self, newvalue, idx):
     names = ['cName','cbTime','cbRems']
