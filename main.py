@@ -23,7 +23,7 @@ from kivymd.app import MDApp
 import os
 import sqlite3
 from kivy.utils import platform
-
+import datetime,time
 
 
 # from fmn_main import Main, RecycleViewRow
@@ -113,11 +113,24 @@ class Main(Screen):
   cursor = ObjectProperty()
   connection = ObjectProperty()
 
+# int id # идентификатор, primary key, uniq
+# int parent # идентификатор родителя (0 для корневого)
+# string title # подпись
+# int x,y,w,h # описание рамки на родительском фото
+# int photo # номер фотографии (0, если фото нет)
+# int weight # порядковый номер в родительском списке
+# int deleted # признак удаления
+# timedate created # время и дата создания
+# timedate updated # время и дата последнего изменения/удале
+
   def init_db(self):
-    x = self.cursor.execute("CREATE TABLE IF NOT EXISTS Callbacks(cID INTEGER PRIMARY KEY, cName TEXT, cbTime INT, cbRems TEXT)")
-    for i in list(range(3)):
-      t = datetime.datetime.now().minute
-      self.cursor.execute(f"INSERT INTO Callbacks (cName, cbTime, cbRems) VALUES ('Client{i}', {1700+t},'Test{i}')")
+    x = self.cursor.execute(\
+        "CREATE TABLE IF NOT EXISTS Items(ID INTEGER PRIMARY KEY, TITLE TEXT, "\
+        "PARENT INTEGER, X INTEGER DEFAULT 0, Y INTEGER DEFAULT 0, "\
+        "W INTEGER DEFAULT 0, H INTEGER DEFAULT 0, "\
+        "PHOTO INTEGER DEFAULT 0, WEIGHT INTEGER DEFAULT 0, IS_DEL INTEGER DEFAULT 0, "\
+        "CREATED INTEGER DEFAULT 0, UPDATED INTEGER DEFAULT 0)"\
+        )
     self.connection.commit()
 
   def get_users(self):
@@ -128,34 +141,44 @@ class Main(Screen):
 
     self.connection = sqlite3.connect(os.path.join(store_path, 'my.db'))
     self.cursor = self.connection.cursor()
-    self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='Callbacks'")
+    
+
+    # Check if table is present and seed it
+    # TODO: delete this code in production
+    self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='Items'")
     table = self.cursor.fetchall()
     if len(table) < 1:
-      self.init_db()
+        self.init_db()
+        for i in list(range(3)):
+          t = time.time()
+          self.cursor.execute(f"INSERT INTO Items (TITLE, PARENT, WEIGHT, CREATED, UPDATED) VALUES ('Item{i}', 0, {3-i}, {t}, {t})")
 
-    self.cursor.execute("SELECT * FROM Callbacks ORDER BY ROWID ASC")
-
+    # TODO: uncomment in production
+    # self.init_db()
+    self.cursor.execute("SELECT * FROM Items ORDER BY ID ASC")
+    # id, title, parent, x,y,w,h, photo, weight, is_del, created, updated
     rows = self.cursor.fetchall()
 
     ml = self.ids['main_list']
     # create data_items
-    ml.data = [{'text': f"{row[0]} - {row[1]} - {row[2]} - {row[3]}"} for row in rows]
+    data = [{'myid': row[8], 'text': f"{row[1]} @{row[2]} {row[3]}:{row[4]} {row[5]}x{row[6]}"} for row in rows]
+    ml.data = sorted(data, key=lambda x: x['myid'])
     ml.refresh_from_data()
 
     im = self.ids['item_image']
     im.source = 'photo.jpeg'
 
 
-  def update_db(self, newvalue, idx):
-    names = ['cName','cbTime','cbRems']
-    row = 1+ idx // 4
-    pos = 1+ idx % 4
-    update = newvalue, row
-    print(f"row: {row}; pos: {pos}; idx: {idx}; val: {newvalue};")
-    print(f"UPDATE Callbacks SET {names[pos]} = {update[0]} WHERE cID = {update[1]}")
-    self.cursor.execute(f'UPDATE Callbacks SET {names[pos]} = ? WHERE cID = ?', update)
+  # def update_db(self, newvalue, idx):
+  #   names = ['TITLE','cbTime','cbRems']
+  #   row = 1+ idx // 4
+  #   pos = 1+ idx % 4
+  #   update = newvalue, row
+  #   print(f"row: {row}; pos: {pos}; idx: {idx}; val: {newvalue};")
+  #   print(f"UPDATE Items SET {names[pos]} = {update[0]} WHERE ID = {update[1]}")
+  #   self.cursor.execute(f'UPDATE Items SET {names[pos]} = ? WHERE ID = ?', update)
 
-    self.connection.commit()
+  #   self.connection.commit()
 
 
 
