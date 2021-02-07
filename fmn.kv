@@ -29,24 +29,41 @@
 
 
 #---------------------  Items List  --------------------
+<ItemLabel>:
+  # Draw a background to indicate selection
+  theme_text_color: 'Primary'
+
 <RecycleViewRow>:
   orientation: 'horizontal'
   text: ''
-  index: 0
-  MDLabel:
-    markup: True
-    text_size: self.size
+  # index: 0
+  # 
+  # !! How to draw border around any widget!!
+  # canvas.before:
+  #   Color:
+  #     rgba: .5, .5, .5, 1
+  #   Line:
+  #     width: 2
+  #     rectangle: self.x, self.y, self.width, self.height
+
+  ItemLabel:
+    markup: False
+    # text_size: (None, None)#self.size
+    size_hint_x: 1
     text: root.text
+    on_press: root.do_select()
   MDIconButton:
     size_hint_max_x: 50
     icon: 'arrow-up-bold'
-    text: '_up_' #root.buttontext #contains a link
-    on_press: root.do_up() #opens that link
+    text: '_up_'
+    opacity: 1 if app.isEditing else 0
+    on_press: if app.isEditing: root.do_up()
   MDIconButton:
     size_hint_max_x: 50
     icon: 'arrow-down-bold'
-    text: 'down' #root.buttontext #contains a link
-    on_press: root.do_down() #opens that link
+    text: 'down'
+    opacity: 1 if app.isEditing else 0
+    on_press: if app.isEditing: root.do_down()
 
 <Main>:
   name: "main"
@@ -65,6 +82,8 @@
         hint_text: "Item name here"
       MDIconButton:
         icon: 'pencil'
+        on_release:
+          app.isEditing = not app.isEditing
       MDIconButton:
         icon: 'dots-vertical'
         on_release:
@@ -95,6 +114,7 @@
             default_size: None, dp(48)
             default_size_hint: 1, None
             height: self.minimum_height
+            width: root.width
             orientation: 'vertical'
             multiselect: True
             touch_multiselect: True
